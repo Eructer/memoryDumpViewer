@@ -217,5 +217,5 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
-cache/*
-test/*
+src/main/cache/*
+src/main/test/*
