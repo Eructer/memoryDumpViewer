@@ -13,3 +13,10 @@ templates = Jinja2Templates(directory="templates")
 async def home(request: Request):
     context = {"message" : "index"}
     return templates.TemplateResponse(request=request, context=context, name="index.html", status_code=200)
+
+
+@app.get("/post", response_class=HTMLResponse)
+async def upload(request: Request):
+    context = {"message" : "File processed"}
+    # Process file
+    return templates.TemplateResponse(request=request, context=context, name="index.html", status_code=200)
