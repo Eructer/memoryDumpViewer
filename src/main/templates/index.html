@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Memory Dump Viewer</title>
+    <link rel="stylesheet" href="static/index.css">
+    <script defer src="static/index.js"></script>
+        
+</head>
+<body>
+<div class="container">
+  <h1>Memory Dump Viewer</h1>
+
+  <!-- File Upload Form -->
+  <form id="uploadForm" enctype="multipart/form-data" class="uploadForm">
+      <input type="file" name="memoryDumpFile"/>
+      <input type="number" name="chunkSize" placeholder="Suggested : 8000000000 (1GB)"/>
+      <button type="submit">Upload and View Memory Dump</button>
+  </form>
+
+  <!-- Page Selection Input for Viewing Pages of the Memory Dump -->
+  <div class="page-selection-container">
+    <label for="pageNumber">Select a page:</label><br/>
+    <input id="pageNumber" name="pageNumber" type="number" min="1" value="1"/>
+    <button onclick="fetchMemoryDumpPage()">View Page</button>
+  </div>
+
+  <!-- Memory Dump Viewer Container -->
+  <div class="memory-viewer-container">
+    <h2>Memory Viewer's Result:</h2>
+    <pre id="result"></pre>
+  </div>
+</div>
+
+</body>
+</html>

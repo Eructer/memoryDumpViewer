@@ -1,5 +1,7 @@
 import os
 from pathlib import Path
+from typing import BinaryIO
+from fastapi import UploadFile
 from cache import Cache
 
 
@@ -8,6 +10,11 @@ class Parser:
         self.chunk_size = chunk_size
         self.cache_dir = Path(cache_dir)
         self.cache_handle = Cache()
+
+    def read_chunk_from_bytes(self, chunk_num: int, source: UploadFile):
+        cache_path = self.cache_handle.ensure_chunk_cached_from_upload(chunk_num, self.chunk_size, source, self._get_chunk_path)
+        with open(cache_path, 'rb') as f:
+            return f.read()
 
     def read_chunk(self, chunk_num: int, source_file: str):
         cache_path = self.cache_handle.ensure_chunk_cached(chunk_num, self.chunk_size, source_file, self._get_chunk_path)

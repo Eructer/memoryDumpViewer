@@ -2,6 +2,9 @@ from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
+from fastapi import UploadFile, File
+
+from parser import Parser
 
 app = FastAPI()
 
@@ -15,8 +18,21 @@ async def home(request: Request):
     return templates.TemplateResponse(request=request, context=context, name="index.html", status_code=200)
 
 
-@app.get("/post", response_class=HTMLResponse)
-async def upload(request: Request):
-    context = {"message" : "File processed"}
+@app.post("/process_memory_dump")
+async def upload(memory_dump: UploadFile = File(...)):
     # Process file
-    return templates.TemplateResponse(request=request, context=context, name="index.html", status_code=200)
+    print("DEBUG: ENTRY")
+    chunk_size = 8000000000
+    passes = 0
+
+    if memory_dump.size:
+        passes = memory_dump.size // chunk_size
+
+    parser = Parser(chunk_size, cache_dir="src/main/cache")
+
+    print("Parser made")
+
+    for i in range(1, passes, 1):
+        parser.read_chunk_from_bytes(i, memory_dump)
+    
+    return {"file_name" : memory_dump.filename}
